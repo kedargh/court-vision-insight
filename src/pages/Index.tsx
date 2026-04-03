@@ -5,6 +5,8 @@ import FeaturesSection from "@/components/FeaturesSection";
 import VideoUpload from "@/components/VideoUpload";
 import AnalysisProgress from "@/components/AnalysisProgress";
 import ReportSection from "@/components/ReportSection";
+import CursorTracker from "@/components/CursorTracker";
+import ParticleField from "@/components/ParticleField";
 
 const stages = [
   "Extracting frames...",
@@ -46,14 +48,15 @@ const Index = () => {
 
   const handleVideoSubmit = useCallback(
     (_file: File) => {
-      // In production, this would upload to backend and trigger Python workflow
       simulateAnalysis();
     },
     [simulateAnalysis]
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <CursorTracker />
+      <ParticleField />
       <Navbar />
       <HeroSection />
       <FeaturesSection />
@@ -69,7 +72,7 @@ const Index = () => {
       {appState === "done" && <ReportSection />}
 
       {/* Footer */}
-      <footer className="py-10 border-t border-border">
+      <footer className="relative z-10 py-10 border-t border-border/30">
         <div className="container mx-auto px-4 text-center">
           <p className="text-muted-foreground text-sm font-body">
             © 2026 CourtVision · AI-Powered Match Analysis

@@ -1,25 +1,36 @@
 import { Activity } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-secondary/80 backdrop-blur-xl border-b border-border/50">
+    <motion.nav
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/30"
+    >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg accent-gradient flex items-center justify-center">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          className="flex items-center gap-2"
+        >
+          <div className="w-8 h-8 rounded-lg accent-gradient flex items-center justify-center glow-shadow">
             <Activity className="w-4 h-4 text-accent-foreground" />
           </div>
           <span className="font-display font-bold text-lg text-foreground">
             CourtVision
           </span>
-        </div>
-        <a
+        </motion.div>
+        <motion.a
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           href="#upload"
-          className="text-sm font-display font-medium text-primary hover:text-primary/80 transition-colors"
+          className="text-sm font-display font-medium text-primary hover:text-primary/80 transition-colors px-4 py-2 rounded-full border border-primary/30 hover:border-primary/60 hover:glow-shadow"
         >
           Analyze Match →
-        </a>
+        </motion.a>
       </div>
-    </nav>
+    </motion.nav>
   );
 };
 
