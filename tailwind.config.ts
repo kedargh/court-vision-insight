@@ -51,14 +51,6 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        court: "hsl(var(--court-green))",
-        tennis: "hsl(var(--tennis-yellow))",
-        navy: {
-          DEFAULT: "hsl(var(--navy))",
-          light: "hsl(var(--navy-light))",
-        },
-        shuttle: "hsl(var(--shuttle-white))",
-        glow: "hsl(var(--glow-green))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -99,10 +91,6 @@ export default {
         "slide-up": {
           "0%": { opacity: "0", transform: "translateY(40px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "progress-fill": {
-          "0%": { width: "0%" },
-          "100%": { width: "100%" },
         },
       },
       animation: {

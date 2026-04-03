@@ -73,8 +73,9 @@ const VideoUpload = ({ onVideoSubmit, isAnalyzing }: VideoUploadProps) => {
   };
 
   return (
-    <section id="upload" className="py-20 sm:py-28">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
+    <section id="upload" className="relative py-20 sm:py-28">
+      <div className="absolute inset-0 grid-bg" />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -83,7 +84,7 @@ const VideoUpload = ({ onVideoSubmit, isAnalyzing }: VideoUploadProps) => {
           className="text-center mb-10"
         >
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Upload Your Match Video
+            Upload Your <span className="text-gradient">Match Video</span>
           </h2>
           <p className="text-muted-foreground font-body max-w-lg mx-auto">
             Drop a full-court .mp4 video with 2 players visible. Our AI will
@@ -98,13 +99,15 @@ const VideoUpload = ({ onVideoSubmit, isAnalyzing }: VideoUploadProps) => {
           transition={{ duration: 0.6, delay: 0.15 }}
         >
           {/* Drop Zone */}
-          <div
+          <motion.div
+            whileHover={{ scale: 1.01 }}
+            transition={{ duration: 0.3 }}
             onDragEnter={handleDrag}
             onDragOver={handleDrag}
             onDragLeave={handleDrag}
             onDrop={handleDrop}
             onClick={() => !selectedFile && inputRef.current?.click()}
-            className={`upload-zone p-10 sm:p-14 text-center cursor-pointer transition-all duration-300 ${
+            className={`upload-zone p-10 sm:p-14 text-center cursor-none transition-all duration-500 ${
               dragActive ? "upload-zone-active" : "hover:border-primary/50"
             } ${selectedFile ? "border-primary bg-primary/5" : ""}`}
           >
@@ -120,14 +123,18 @@ const VideoUpload = ({ onVideoSubmit, isAnalyzing }: VideoUploadProps) => {
               {!selectedFile ? (
                 <motion.div
                   key="empty"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
                   className="flex flex-col items-center gap-4"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <motion.div
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center glow-shadow"
+                  >
                     <Upload className="w-7 h-7 text-primary" />
-                  </div>
+                  </motion.div>
                   <div>
                     <p className="font-display font-semibold text-foreground text-lg">
                       Drag & drop your match video
@@ -145,7 +152,7 @@ const VideoUpload = ({ onVideoSubmit, isAnalyzing }: VideoUploadProps) => {
                   exit={{ opacity: 0 }}
                   className="flex items-center gap-4"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 glow-shadow">
                     <Film className="w-6 h-6 text-primary" />
                   </div>
                   <div className="text-left flex-1 min-w-0">
@@ -171,7 +178,7 @@ const VideoUpload = ({ onVideoSubmit, isAnalyzing }: VideoUploadProps) => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
 
           {/* Error */}
           <AnimatePresence>
@@ -190,25 +197,27 @@ const VideoUpload = ({ onVideoSubmit, isAnalyzing }: VideoUploadProps) => {
 
           {/* Submit Button */}
           <motion.div className="mt-6 flex justify-center">
-            <Button
-              size="lg"
-              disabled={!selectedFile || isAnalyzing}
-              onClick={() => selectedFile && onVideoSubmit(selectedFile)}
-              className="font-display text-base px-8 py-6 accent-gradient text-accent-foreground hover:opacity-90 transition-opacity disabled:opacity-40 glow-shadow"
-            >
-              {isAnalyzing ? (
-                <span className="flex items-center gap-2">
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="w-4 h-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full"
-                  />
-                  Analyzing...
-                </span>
-              ) : (
-                "Start Analysis"
-              )}
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                size="lg"
+                disabled={!selectedFile || isAnalyzing}
+                onClick={() => selectedFile && onVideoSubmit(selectedFile)}
+                className="font-display text-base px-8 py-6 accent-gradient text-accent-foreground hover:opacity-90 transition-opacity disabled:opacity-40 glow-shadow"
+              >
+                {isAnalyzing ? (
+                  <span className="flex items-center gap-2">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="w-4 h-4 border-2 border-accent-foreground/30 border-t-accent-foreground rounded-full"
+                    />
+                    Analyzing...
+                  </span>
+                ) : (
+                  "Start Analysis"
+                )}
+              </Button>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>

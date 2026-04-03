@@ -16,19 +16,21 @@ const stages = [
 
 const AnalysisProgress = ({ progress, stage }: AnalysisProgressProps) => {
   return (
-    <section className="py-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
+    <section className="relative py-20">
+      <div className="absolute inset-0 grid-bg" />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="glass-card rounded-2xl p-8 sm:p-10"
+          className="glass-card rounded-2xl p-8 sm:p-10 scan-line"
         >
           <div className="text-center mb-8">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
               className="w-14 h-14 mx-auto mb-4 rounded-full border-4 border-muted border-t-primary"
+              style={{ boxShadow: "0 0 20px hsl(142 70% 45% / 0.3)" }}
             />
             <h3 className="font-display text-xl font-bold text-foreground">
               Analyzing Your Match
@@ -45,6 +47,7 @@ const AnalysisProgress = ({ progress, stage }: AnalysisProgressProps) => {
               initial={{ width: 0 }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.5, ease: "easeOut" }}
+              style={{ boxShadow: "0 0 10px hsl(142 70% 45% / 0.5)" }}
             />
           </div>
 
@@ -73,14 +76,29 @@ const AnalysisProgress = ({ progress, stage }: AnalysisProgressProps) => {
                       : "text-muted-foreground/50"
                   }`}
                 >
-                  <div
+                  <motion.div
+                    animate={
+                      isCurrent
+                        ? { scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }
+                        : {}
+                    }
+                    transition={
+                      isCurrent
+                        ? { duration: 1.5, repeat: Infinity }
+                        : {}
+                    }
                     className={`w-2 h-2 rounded-full shrink-0 ${
                       isDone
                         ? "bg-primary"
                         : isCurrent
-                        ? "bg-tennis animate-pulse"
+                        ? "bg-primary"
                         : "bg-muted-foreground/20"
                     }`}
+                    style={
+                      isCurrent || isDone
+                        ? { boxShadow: "0 0 8px hsl(142 70% 45% / 0.5)" }
+                        : {}
+                    }
                   />
                   {s}
                 </motion.div>

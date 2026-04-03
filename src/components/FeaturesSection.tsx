@@ -26,8 +26,9 @@ const features = [
 
 const FeaturesSection = () => {
   return (
-    <section className="py-20 sm:py-28 bg-secondary/30">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative py-20 sm:py-28 overflow-hidden">
+      <div className="absolute inset-0 grid-bg" />
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -36,7 +37,7 @@ const FeaturesSection = () => {
           className="text-center mb-14"
         >
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            What You'll Get
+            What You'll <span className="text-gradient">Get</span>
           </h2>
           <p className="text-muted-foreground font-body max-w-lg mx-auto">
             A detailed PDF report powered by cutting-edge computer vision analysis.
@@ -50,12 +51,20 @@ const FeaturesSection = () => {
               initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              className="glass-card rounded-2xl p-6 hover:card-shadow-hover transition-all duration-300 group"
+              transition={{ duration: 0.5, delay: i * 0.12 }}
+              whileHover={{
+                y: -8,
+                transition: { duration: 0.3 },
+              }}
+              className="glass-card rounded-2xl p-6 transition-all duration-500 group"
             >
-              <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+              <motion.div
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }}
+                className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors group-hover:glow-shadow"
+              >
                 <f.icon className="w-5 h-5 text-primary" />
-              </div>
+              </motion.div>
               <h3 className="font-display font-semibold text-foreground mb-2">
                 {f.title}
               </h3>
