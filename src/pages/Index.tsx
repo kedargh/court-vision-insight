@@ -385,7 +385,7 @@ const Index = () => {
                     style={{ boxShadow: "0 0 20px hsl(142 70% 45% / 0.3)" }}
                   />
                   <h3 className="font-display text-lg font-bold text-foreground">
-                    Analyzing Your Match
+                    Analyzing Your {selectedSport === "tennis" ? "Tennis" : "Badminton"} Match
                   </h3>
                   <p className="text-muted-foreground text-xs font-body mt-1">{stage}</p>
                 </div>
