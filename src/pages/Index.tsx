@@ -73,23 +73,28 @@ const Index = () => {
     if (validateFile(file)) setSelectedFile(file);
   }, []);
 
-  const handleDrag = useCallback((e: React.DragEvent) => {
+  const handleDrag = useCallback((e: React.DragEvent, sport: Sport) => {
     e.preventDefault();
     e.stopPropagation();
-    setDragActive(e.type === "dragenter" || e.type === "dragover");
+    setDragActive(e.type === "dragenter" || e.type === "dragover" ? sport : null);
   }, []);
 
-  const handleDrop = useCallback((e: React.DragEvent) => {
+  const handleDrop = useCallback((e: React.DragEvent, sport: Sport) => {
     e.preventDefault();
     e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files?.[0]) handleFile(e.dataTransfer.files[0]);
+    setDragActive(null);
+    if (e.dataTransfer.files?.[0]) {
+      setSelectedSport(sport);
+      handleFile(e.dataTransfer.files[0]);
+    }
   }, [handleFile]);
 
   const removeFile = () => {
     setSelectedFile(null);
     setFileError(null);
-    if (inputRef.current) inputRef.current.value = "";
+    setSelectedSport(null);
+    if (tennisInputRef.current) tennisInputRef.current.value = "";
+    if (badmintonInputRef.current) badmintonInputRef.current.value = "";
   };
 
   const formatSize = (bytes: number) => {
