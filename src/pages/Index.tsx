@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Upload, Film, X, CheckCircle2, AlertCircle, Download, Mail, FileText, Loader2, Eye, BarChart3 } from "lucide-react";
+import { Activity, Upload, Film, X, CheckCircle2, AlertCircle, Download, Mail, FileText, Loader2, Eye, BarChart3, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -97,6 +97,12 @@ const Index = () => {
   const handleDownload = () => {
     toast.success("Report download started!", {
       description: "Your match analysis PDF is being prepared.",
+    });
+  };
+
+  const handleVideoDownload = () => {
+    toast.success("Video download started!", {
+      description: "Your analyzed match video is being prepared.",
     });
   };
 
@@ -425,27 +431,58 @@ const Index = () => {
                   Download it or get it delivered to your inbox.
                 </p>
 
-                <div className="grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
-                  {/* Download Card */}
+                <div className="grid sm:grid-cols-3 gap-3 max-w-2xl mx-auto">
+                  {/* Download Video Card */}
                   <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     whileHover={{ y: -3 }}
-                    className="glass-card rounded-xl p-5 flex flex-col items-center text-center"
+                    className="glass-card rounded-xl p-4 flex flex-col items-center text-center"
                   >
                     <motion.div
                       whileHover={{ rotate: 360 }}
                       transition={{ duration: 0.6 }}
-                      className="w-10 h-10 rounded-lg accent-gradient flex items-center justify-center mb-3 glow-shadow"
+                      className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-2 glow-shadow"
                     >
-                      <Download className="w-5 h-5 text-accent-foreground" />
+                      <Video className="w-4 h-4 text-primary" />
                     </motion.div>
-                    <h3 className="font-display font-semibold text-foreground text-sm mb-1">Download PDF</h3>
-                    <p className="text-muted-foreground text-xs font-body mb-3">
+                    <h3 className="font-display font-semibold text-foreground text-xs mb-1">Analyzed Video</h3>
+                    <p className="text-muted-foreground text-[10px] font-body mb-2">
+                      Video with overlays & tracking.
+                    </p>
+                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full mt-auto">
+                      <Button
+                        onClick={handleVideoDownload}
+                        className="w-full accent-gradient text-accent-foreground hover:opacity-90 font-display text-xs glow-shadow"
+                        size="sm"
+                      >
+                        <Download className="w-3 h-3 mr-1.5" />
+                        Download
+                      </Button>
+                    </motion.div>
+                  </motion.div>
+
+                  {/* Download PDF Card */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    whileHover={{ y: -3 }}
+                    className="glass-card rounded-xl p-4 flex flex-col items-center text-center"
+                  >
+                    <motion.div
+                      whileHover={{ rotate: 360 }}
+                      transition={{ duration: 0.6 }}
+                      className="w-9 h-9 rounded-lg accent-gradient flex items-center justify-center mb-2 glow-shadow"
+                    >
+                      <Download className="w-4 h-4 text-accent-foreground" />
+                    </motion.div>
+                    <h3 className="font-display font-semibold text-foreground text-xs mb-1">Download PDF</h3>
+                    <p className="text-muted-foreground text-[10px] font-body mb-2">
                       Full analysis report as PDF.
                     </p>
-                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full">
+                    <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="w-full mt-auto">
                       <Button
                         onClick={handleDownload}
                         className="w-full accent-gradient text-accent-foreground hover:opacity-90 font-display text-xs glow-shadow"
@@ -459,27 +496,27 @@ const Index = () => {
 
                   {/* Email Card */}
                   <motion.div
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
                     whileHover={{ y: -3 }}
-                    className="glass-card rounded-xl p-5 flex flex-col items-center text-center"
+                    className="glass-card rounded-xl p-4 flex flex-col items-center text-center"
                   >
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-3">
-                      <Mail className="w-5 h-5 text-primary" />
+                    <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center mb-2">
+                      <Mail className="w-4 h-4 text-primary" />
                     </div>
-                    <h3 className="font-display font-semibold text-foreground text-sm mb-1">Email Report</h3>
-                    <p className="text-muted-foreground text-xs font-body mb-3">
+                    <h3 className="font-display font-semibold text-foreground text-xs mb-1">Email Report</h3>
+                    <p className="text-muted-foreground text-[10px] font-body mb-2">
                       Send PDF to your email.
                     </p>
-                    <form onSubmit={handleEmailSubmit} className="w-full space-y-2">
+                    <form onSubmit={handleEmailSubmit} className="w-full space-y-1.5 mt-auto">
                       <Input
                         type="email"
                         placeholder="your@email.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         disabled={sent}
-                        className="font-body text-xs bg-muted/50 border-border/50 focus:border-primary h-8"
+                        className="font-body text-xs bg-muted/50 border-border/50 focus:border-primary h-7"
                       />
                       <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                         <Button
