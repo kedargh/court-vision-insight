@@ -18,18 +18,21 @@ const stages = [
 ];
 
 type AppState = "idle" | "analyzing" | "done";
+type Sport = "tennis" | "badminton" | null;
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>("idle");
+  const [selectedSport, setSelectedSport] = useState<Sport>(null);
   const [progress, setProgress] = useState(0);
   const [stage, setStage] = useState(stages[0]);
-  const [dragActive, setDragActive] = useState(false);
+  const [dragActive, setDragActive] = useState<Sport>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const tennisInputRef = useRef<HTMLInputElement>(null);
+  const badmintonInputRef = useRef<HTMLInputElement>(null);
 
   const simulateAnalysis = useCallback(() => {
     setAppState("analyzing");
