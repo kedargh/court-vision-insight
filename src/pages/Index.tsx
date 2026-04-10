@@ -183,7 +183,7 @@ const Index = () => {
 
       {/* Main Content - fills remaining height */}
       <div className="flex-1 relative z-10 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-        <div className="w-full max-w-2xl">
+        <div className="w-full max-w-4xl">
           <AnimatePresence mode="wait">
             {/* IDLE STATE */}
             {appState === "idle" && (
