@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Activity, Upload, Film, X, CheckCircle2, AlertCircle, Download, Mail, FileText, Loader2, Eye, BarChart3, Video, Racquet } from "lucide-react";
+import { Activity, Upload, Film, X, CheckCircle2, AlertCircle, Download, Mail, FileText, Loader2, Eye, BarChart3, Video } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
