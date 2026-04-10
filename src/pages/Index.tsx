@@ -241,111 +241,127 @@ const Index = () => {
                   ))}
                 </motion.div>
 
-                {/* Upload Zone */}
+                {/* Two Upload Zones */}
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4 }}
+                  className="grid grid-cols-1 sm:grid-cols-2 gap-4"
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.01 }}
-                    onDragEnter={handleDrag}
-                    onDragOver={handleDrag}
-                    onDragLeave={handleDrag}
-                    onDrop={handleDrop}
-                    onClick={() => !selectedFile && inputRef.current?.click()}
-                    className={`upload-zone p-8 sm:p-10 text-center transition-all duration-500 ${
-                      dragActive ? "upload-zone-active" : "hover:border-primary/50"
-                    } ${selectedFile ? "border-primary bg-primary/5" : ""}`}
-                  >
-                    <input
-                      ref={inputRef}
-                      type="file"
-                      accept="video/mp4,.mp4"
-                      onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
-                      className="hidden"
-                    />
+                  {(["tennis", "badminton"] as const).map((sport, idx) => {
+                    const isActive = dragActive === sport;
+                    const isSelected = selectedSport === sport && !!selectedFile;
+                    const inputRefForSport = sport === "tennis" ? tennisInputRef : badmintonInputRef;
+                    const sportLabel = sport === "tennis" ? "🎾 Tennis" : "🏸 Badminton";
 
-                    <AnimatePresence mode="wait">
-                      {!selectedFile ? (
-                        <motion.div
-                          key="empty"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="flex flex-col items-center gap-3"
-                        >
-                          <motion.div
-                            animate={{ y: [0, -6, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                            className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center glow-shadow"
-                          >
-                            <Upload className="w-6 h-6 text-primary" />
-                          </motion.div>
-                          <div>
-                            <p className="font-display font-semibold text-foreground">
-                              Drag & drop your match video
-                            </p>
-                            <p className="text-muted-foreground text-xs mt-1 font-body">
-                              or click to browse · .mp4 only · max 500MB
-                            </p>
-                          </div>
-                        </motion.div>
-                      ) : (
-                        <motion.div
-                          key="selected"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="flex items-center gap-4"
-                        >
-                          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 glow-shadow">
-                            <Film className="w-5 h-5 text-primary" />
-                          </div>
-                          <div className="text-left flex-1 min-w-0">
-                            <p className="font-display font-semibold text-foreground truncate text-sm">
-                              {selectedFile.name}
-                            </p>
-                            <p className="text-muted-foreground text-xs font-body">
-                              {formatSize(selectedFile.size)}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-primary" />
-                            <button
-                              onClick={(e) => { e.stopPropagation(); removeFile(); }}
-                              className="p-1 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </motion.div>
-
-                  {fileError && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="flex items-center gap-2 mt-2 text-destructive text-xs font-body justify-center"
-                    >
-                      <AlertCircle className="w-3 h-3" />
-                      {fileError}
-                    </motion.div>
-                  )}
-
-                  <motion.div className="mt-4 flex justify-center">
-                    <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                      <Button
-                        size="lg"
-                        disabled={!selectedFile}
-                        onClick={() => selectedFile && simulateAnalysis()}
-                        className="font-display px-8 py-5 accent-gradient text-accent-foreground hover:opacity-90 transition-opacity disabled:opacity-40 glow-shadow"
+                    return (
+                      <motion.div
+                        key={sport}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 + idx * 0.1 }}
                       >
-                        Start Analysis
-                      </Button>
-                    </motion.div>
+                        <motion.div
+                          whileHover={{ scale: 1.02 }}
+                          onDragEnter={(e) => handleDrag(e, sport)}
+                          onDragOver={(e) => handleDrag(e, sport)}
+                          onDragLeave={(e) => handleDrag(e, sport)}
+                          onDrop={(e) => handleDrop(e, sport)}
+                          onClick={() => !isSelected && inputRefForSport.current?.click()}
+                          className={`upload-zone p-6 sm:p-8 text-center transition-all duration-500 ${
+                            isActive ? "upload-zone-active" : "hover:border-primary/50"
+                          } ${isSelected ? "border-primary bg-primary/5" : ""} ${
+                            selectedFile && !isSelected ? "opacity-40 pointer-events-none" : ""
+                          }`}
+                        >
+                          <input
+                            ref={inputRefForSport}
+                            type="file"
+                            accept="video/mp4,.mp4"
+                            onChange={(e) => e.target.files?.[0] && handleFileSelect(e.target.files[0], sport)}
+                            className="hidden"
+                          />
+
+                          <AnimatePresence mode="wait">
+                            {!isSelected ? (
+                              <motion.div
+                                key="empty"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="flex flex-col items-center gap-3"
+                              >
+                                <motion.div
+                                  animate={{ y: [0, -6, 0] }}
+                                  transition={{ duration: 2, repeat: Infinity, delay: idx * 0.5 }}
+                                  className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center glow-shadow"
+                                >
+                                  <span className="text-2xl">{sport === "tennis" ? "🎾" : "🏸"}</span>
+                                </motion.div>
+                                <div>
+                                  <p className="font-display font-semibold text-foreground text-sm">
+                                    {sportLabel}
+                                  </p>
+                                  <p className="text-muted-foreground text-xs mt-1 font-body">
+                                    Drop or click · .mp4 · max 500MB
+                                  </p>
+                                </div>
+                              </motion.div>
+                            ) : (
+                              <motion.div
+                                key="selected"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="flex items-center gap-3"
+                              >
+                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 glow-shadow">
+                                  <Film className="w-4 h-4 text-primary" />
+                                </div>
+                                <div className="text-left flex-1 min-w-0">
+                                  <p className="font-display font-semibold text-foreground truncate text-xs">
+                                    {selectedFile?.name}
+                                  </p>
+                                  <p className="text-muted-foreground text-[10px] font-body">
+                                    {sportLabel} · {selectedFile && formatSize(selectedFile.size)}
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); removeFile(); }}
+                                  className="p-1 rounded-lg hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
+                                >
+                                  <X className="w-3 h-3" />
+                                </button>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </motion.div>
+                      </motion.div>
+                    );
+                  })}
+                </motion.div>
+
+                {fileError && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="flex items-center gap-2 mt-2 text-destructive text-xs font-body justify-center"
+                  >
+                    <AlertCircle className="w-3 h-3" />
+                    {fileError}
+                  </motion.div>
+                )}
+
+                <motion.div className="mt-4 flex justify-center">
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button
+                      size="lg"
+                      disabled={!selectedFile}
+                      onClick={() => selectedFile && simulateAnalysis()}
+                      className="font-display px-8 py-5 accent-gradient text-accent-foreground hover:opacity-90 transition-opacity disabled:opacity-40 glow-shadow"
+                    >
+                      Start {selectedSport === "tennis" ? "Tennis" : selectedSport === "badminton" ? "Badminton" : ""} Analysis
+                    </Button>
                   </motion.div>
                 </motion.div>
               </motion.div>
