@@ -134,11 +134,17 @@ const Index = () => {
   const resetApp = () => {
     setAppState("idle");
     setSelectedFile(null);
+    setSelectedSport(null);
     setProgress(0);
     setStage(stages[0]);
     setEmail("");
     setSent(false);
     setFileError(null);
+  };
+
+  const handleFileSelect = (file: File, sport: Sport) => {
+    setSelectedSport(sport);
+    handleFile(file);
   };
 
   return (
